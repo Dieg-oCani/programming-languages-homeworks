@@ -1,5 +1,5 @@
 ;----------------------------------------------------------
-; Activity: Problem Set: Recursive Functions I
+; Activity: Problem Set: Using the Sequence API
 ; Date: February 28, 2018.
 ; Author:
 ;          A01376119  Diego Canizales Bollain Goytia
@@ -25,19 +25,19 @@
   (reduce * (repeat b a)))
 
 (defn replic
-  "Returns a new list with n copies of each element in lst")
+  "Returns a new list with n copies of each element in lst"
 
 
 
 
 
-;; Unit tests
+  ;; Unit tests
 
-(deftest test-positives
-  (is (= () (positives '())))
-  (is (= () (positives '(-4 -1 -10 -13 -5))))
-  (is (= '(3 6) (positives '(-4 3 -1 -10 -13 6 -5))))
-  (is (= '(4 3 1 10 13 6 5) (positives '(4 3 1 10 13 6 5)))))
+  (deftest test-positives
+    (is (= () (positives '())))
+    (is (= () (positives '(-4 -1 -10 -13 -5))))
+    (is (= '(3 6) (positives '(-4 3 -1 -10 -13 6 -5))))
+    (is (= '(4 3 1 10 13 6 5) (positives '(4 3 1 10 13 6 5))))))
 
 
 (deftest test-dot-product
