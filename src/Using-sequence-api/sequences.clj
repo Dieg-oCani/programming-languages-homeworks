@@ -26,18 +26,24 @@
 
 (defn replic
   "Returns a new list with n copies of each element in lst"
+  [n lst]
+  (mapcat #(repeat n %) lst))
+
+(defn expand
+  "Returns a list where the first element is repeated one time, the second element
+  two times, and so on."
+  [lst]
+  (mapcat #(repeat (first %) (second %))  (map-indexed (fn [i n]  (list (inc i) n)) lst)))
 
 
 
+;; Unit tests
 
-
-  ;; Unit tests
-
-  (deftest test-positives
-    (is (= () (positives '())))
-    (is (= () (positives '(-4 -1 -10 -13 -5))))
-    (is (= '(3 6) (positives '(-4 3 -1 -10 -13 6 -5))))
-    (is (= '(4 3 1 10 13 6 5) (positives '(4 3 1 10 13 6 5))))))
+(deftest test-positives
+  (is (= () (positives '())))
+  (is (= () (positives '(-4 -1 -10 -13 -5))))
+  (is (= '(3 6) (positives '(-4 3 -1 -10 -13 6 -5))))
+  (is (= '(4 3 1 10 13 6 5) (positives '(4 3 1 10 13 6 5)))))
 
 
 (deftest test-dot-product
@@ -58,5 +64,20 @@
   (is (= 525.21875 (pow 3.5 5)))
   (is (= 129746337890625 (pow 15 12)))
   (is (= 3909821048582988049 (pow 7 22))))
+
+(deftest test-replic
+  (is (= () (replic 7 ())))
+  (is (= () (replic 0 '(a b c))))
+  (is (= '(a a a) (replic 3 '(a))))
+  (is (= '(1 1 1 1 2 2 2 2 3 3 3 3 4 4 4 4)
+         (replic 4 '(1 2 3 4)))))
+
+
+(deftest test-expand
+  (is (= () (expand ())))
+  (is (= '(a) (expand '(a))))
+  (is (= '(1 2 2 3 3 3 4 4 4 4) (expand '(1 2 3 4))))
+  (is (= '(a b b c c c d d d d e e e e e)
+         (expand '(a b c d e)))))
 
 (run-tests)
