@@ -4,8 +4,9 @@
 ; Author:
 ;          A01376119  Diego Canizales Bollain Goytia
 ;----------------------------------------------------------
-
 (use 'clojure.test)
+
+
 
 
 (defn positives
@@ -35,16 +36,41 @@
   [lst]
   (mapcat #(repeat (first %) (second %))  (map-indexed (fn [i n]  (list (inc i) n)) lst)))
 
+(defn largest
+  "Takes a list as an argument and returns the greatest value found in the list.
+  It does not use the predefined max or min functons, the implementation is made with reduce."
+  [lst]
+  (reduce #(cond (> %1 %2) %1 :else  %2) lst))
+
+(defn drop-every
+  "Takes two arguments, an integer number n, where n>=1, and a list. It returns
+  a new list that drops every nth element from lst."
+  [n lst]
+  (flatten (partition-all (dec n) n lst)))
+
+(defn rotate-left
+  "The function rotate-left takes two arguments: an integer number n and a list lst.
+  It returns the list that results from rotating lst a total of n elements to the left.
+  If n is negative, it rotates to the right."
+  [n lst]
+  (cond
+    (zero? n)  lst
+    (empty? lst)  lst
+    (> (Math/abs n) (count lst)) (let [res (split-at (mod n (count lst)) lst)] (concat (second res) (first res)))
+    (pos?  n) (let [res (split-at n lst)] (concat (second res) (first res)))
+    :else
+    (let [res (split-at (+ (count lst) n) lst)] (concat (second res) (first res)))))
 
 
-;; Unit tests
 
+
+
+  ;; Unit tests
 (deftest test-positives
   (is (= () (positives '())))
   (is (= () (positives '(-4 -1 -10 -13 -5))))
   (is (= '(3 6) (positives '(-4 3 -1 -10 -13 6 -5))))
   (is (= '(4 3 1 10 13 6 5) (positives '(4 3 1 10 13 6 5)))))
-
 
 (deftest test-dot-product
   (is (= 0 (dot-product () ())))
@@ -72,12 +98,42 @@
   (is (= '(1 1 1 1 2 2 2 2 3 3 3 3 4 4 4 4)
          (replic 4 '(1 2 3 4)))))
 
-
 (deftest test-expand
   (is (= () (expand ())))
   (is (= '(a) (expand '(a))))
   (is (= '(1 2 2 3 3 3 4 4 4 4) (expand '(1 2 3 4))))
   (is (= '(a b b c c c d d d d e e e e e)
          (expand '(a b c d e)))))
+
+(deftest test-largest
+  (is (= 31 (largest '(31))))
+  (is (= 5 (largest '(1 2 3 4 5))))
+  (is (= -1 (largest '(-1 -2 -3 -4 -5))))
+  (is (= 52 (largest '(32 -1 45 12 -42 52 17 0 21 2)))))
+
+(deftest test-drop-every
+  (is (= () (drop-every 5 ())))
+  (is (= '(1 2 3) (drop-every 4 '(1 2 3 4))))
+  (is (= '(1 3 5 7) (drop-every 2 '(1 2 3 4 5 6 7 8))))
+  (is (= '(1 3 5 7 9) (drop-every 2 '(1 2 3 4 5 6 7 8 9))))
+  (is (= '(a b d e g h j)
+         (drop-every 3 '(a b c d e f g h i j))))
+  (is (= '(a b c d e f g h i j)
+         (drop-every 20 '(a b c d e f g h i j))))
+  (is (= () (drop-every 1 '(a b c d e f g h i j)))))
+
+(deftest test-rotate-left
+  (is (= () (rotate-left 5 ())))
+  (is (= '(a b c d e f g) (rotate-left 0 '(a b c d e f g))))
+  (is (= '(b c d e f g a) (rotate-left 1 '(a b c d e f g))))
+  (is (= '(g a b c d e f) (rotate-left -1 '(a b c d e f g))))
+  (is (= '(d e f g a b c) (rotate-left 3 '(a b c d e f g))))
+  (is (= '(e f g a b c d) (rotate-left -3 '(a b c d e f g))))
+  (is (= '(a b c d e f g) (rotate-left 7 '(a b c d e f g))))
+  (is (= '(a b c d e f g) (rotate-left -7 '(a b c d e f g))))
+  (is (= '(b c d e f g a) (rotate-left 8 '(a b c d e f g))))
+  (is (= '(g a b c d e f) (rotate-left -8 '(a b c d e f g))))
+  (is (= '(d e f g a b c) (rotate-left 45 '(a b c d e f g))))
+  (is (= '(e f g a b c d) (rotate-left -45 '(a b c d e f g)))))
 
 (run-tests)
