@@ -61,11 +61,22 @@
     :else
     (let [res (split-at (+ (count lst) n) lst)] (concat (second res) (first res)))))
 
+(defn gcd
+  "Takes two positive arguments a, and b, and returns the greatest common divisor of a and b."
+  [a b]
+  (apply max (for [i (range)
+                   :while  (< i (/ (min a b) 2))] (cond
+                                                        (zero? i)  -1
+                                                        (and (zero? (rem a i)) (zero? (rem b i)))  i
+                                                        :else -1))))
 
 
 
 
-  ;; Unit tests
+
+
+
+;; Unit tests
 (deftest test-positives
   (is (= () (positives '())))
   (is (= () (positives '(-4 -1 -10 -13 -5))))
@@ -135,5 +146,14 @@
   (is (= '(g a b c d e f) (rotate-left -8 '(a b c d e f g))))
   (is (= '(d e f g a b c) (rotate-left 45 '(a b c d e f g))))
   (is (= '(e f g a b c d) (rotate-left -45 '(a b c d e f g)))))
+
+(deftest test-gcd
+  (is (= 1 (gcd 13 7919)))
+  (is (= 4 (gcd 20 16)))
+  (is (= 6 (gcd 54 24)))
+  (is (= 7 (gcd 6307 1995)))
+  (is (= 12 (gcd 48 180)))
+  (is (= 14 (gcd 42 56))))
+
 
 (run-tests)
