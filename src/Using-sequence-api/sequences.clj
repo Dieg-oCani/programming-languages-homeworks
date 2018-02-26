@@ -82,8 +82,6 @@
 
 
 
-
-
 ;; Unit tests
 (deftest test-positives
   (is (= () (positives '())))
