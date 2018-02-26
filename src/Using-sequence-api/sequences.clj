@@ -80,8 +80,6 @@
                                                          (split-at i lst))) (list (concat lst (list x)))))
 
 
-
-
 ;; Unit tests
 (deftest test-positives
   (is (= () (positives '())))
