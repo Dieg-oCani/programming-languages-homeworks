@@ -3,6 +3,7 @@
 ; Date: February 28, 2018.
 ; Author:
 ;          A01376119  Diego Canizales Bollain Goytia
+;          A01375997  Isaín Cuadra Rivas
 ;----------------------------------------------------------
 (use 'clojure.test)
 
@@ -78,6 +79,7 @@
   (concat (map #(concat (first %) (list x) (second %)) (for
                                                          [i (range (count lst))]
                                                          (split-at i lst))) (list (concat lst (list x)))))
+
 
 
 ;; Unit tests
