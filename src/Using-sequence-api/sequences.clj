@@ -76,9 +76,9 @@
   It returns a new list containing every possible way in which x can be
   inserted into every position of lst."
   [x lst]
-  (concat (map #(concat (first %) (list x) (second %)) (for
-                                                         [i (range (count lst))]
-                                                         (split-at i lst))) (list (concat lst (list x)))))
+  (map #(concat (first %) (list x) (second %)) (for
+                                                    [i (range (inc (count lst)))]
+                                                    (split-at i lst))))
 
 
 
