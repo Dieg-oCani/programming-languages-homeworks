@@ -6,11 +6,11 @@
     :else
     (*' n (myFactorial (dec n)))))
 
-(defn myiterate
+(defn myIterate
   "The result is a list that does: f, (f x) (f (f x)), ... up to infinity.
   My implementation of the Iterate function in clojure."
   [f x]
-  (lazy-seq (cons x (myiterate f (f x)))))
+  (lazy-seq (cons x (myIterate f (f x)))))
 
 (defn comparisons
   "It's a function that takes three arguments, a less than operator and 2 elements to compare.
@@ -28,7 +28,7 @@
 (defn cartesianProduct
   "Returns the cartesian product of two sets."
   [k v]
-  (#(set (for [a (vec %1) b (vec %2)] [a b]))k v))
+  (#(set (for [a (vec %1) b (vec %2)] [a b]))k v)) ;; uses destructuring.
 
 (defn productDigits
   "Returns the digits of a the multiplication of a times b."
@@ -48,15 +48,28 @@
   [func s]
   (apply merge-with into (for [v s] {(func v) [v]})))
 
+(defn sumSquareDigits
+  "Sums the digits"
+  [digits]
+  (reduce + (map #(* % %) digits)))
+
+(defn digits
+  "Returns digits of a number"
+  [n]
+  (loop [res ()
+         n n]
+    (cond
+      (zero? n) res
+      :else
+      (recur (conj res (mod n 10)) (quot n 10)))))
+
+(defn smallerThanSumDigits
+  "This functon finds which elements are smaller than the sum of the squares of it's digits."
+  [lst]
+  (count (filter #(< (first %) (second %)) (map-indexed vector (map #(sumSquareDigits (digits %)) lst)))))
 
 
 
-
-
-
-
-
-;; Helper functions for comparisons debugging #(fn [x y] (< (count x) (count y)))
 
 
 
