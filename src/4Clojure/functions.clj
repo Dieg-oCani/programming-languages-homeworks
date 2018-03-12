@@ -1,3 +1,5 @@
+(use 'clojure.set)
+
 (defn myFactorial
   "Returns the factorial of a given number."
   [n]
@@ -67,6 +69,64 @@
   "This functon finds which elements are smaller than the sum of the squares of it's digits."
   [lst]
   (count (filter #(< (first %) (second %)) (map-indexed vector (map #(sumSquareDigits (digits %)) lst)))))
+
+
+(defn symmetricDifference
+  "Returns the items that belong to one but not both of the two sets."
+  [set1 set2]
+  (let [s1 (map #(cond
+                   (nil? (get set2 %)) %
+                   :else
+                   nil) set1)
+        s2 (map #(cond
+                   (nil? (get set1 %)) %
+                   :else
+                   nil) set2)]
+    (disj (set (concat s1 s2)) nil)))
+
+
+(defn dotProduct
+  "Returns the dot product of two sequences s1 and s2"
+  [s1 s2]
+  (->> (interleave s1 s2) (partition 2) (map vec) (map (fn [a] (* (first a) (second a)))) (reduce +)))
+
+
+(defn readBinary
+  "Receives a list of digits of a binary number and returns the base 2 number."
+  [binary]
+  (->> (seq binary) (reverse) (map-indexed vector) (map (fn [a] (cond
+                                                                  (= (second a) \1) (int (Math/pow 2 (first a)))
+                                                                  :else
+                                                                  0))) (reduce +)))
+
+(defn pascalsTriangle
+  "Receives a floor of the pascals triangle and it computes it."
+  [n]
+  (cond
+    (= n 1) [1]
+    :else
+    (loop [i 1
+           res ()]
+      (cond
+        (= i (max n)) (first res)
+        :else
+        (recur (inc i) (conj res (vec (->>
+                                       (partition 2 1 (first res))
+                                       (map #(reduce + %))
+                                       (cons 1)
+                                       (reverse)
+                                       (cons 1)))))))))
+
+(defn pascalsTriangleEnhanced
+  "Receives a floor of the pascals triangle and computes it."
+  [n]
+  (last (take n (iterate #(map +' `(0 ~@%) `(~@% 0)) [1]))))
+
+
+
+
+
+
 
 
 
