@@ -6,7 +6,7 @@
   ([x & next] `(if ~x ~x (my-or ~@next))))
 
 (defmacro do-loop
-  "Implementation of a do-loop, in which every operations in the body is executed
+  "Implementaion of a do-loop, in which every operations in the body is executed
   at least one time before cheking for a test. It can receive an n number of ops
   and a test in the last argument.
   There are two keywords for the test, if you use an :until keyword, the body will
@@ -26,3 +26,20 @@
          ~@(butlast more)
          (if (not ~(last (last more)))
            (recur))))))
+
+(defmacro def-pred
+  "Receives a predicate name, an argument vector and a body consisting of one or more
+  expressions."
+  [name args & body]
+  `(do
+     (defn ~name
+       [~@(flatten args)]
+       ~@body)
+     (defn ~(symbol (str "not-" name))
+       [~@(flatten args)]
+       (not (do ~@body)))))
+
+
+
+
+
